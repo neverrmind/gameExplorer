@@ -1,17 +1,13 @@
 package com.example.gamesapplication.repo
 
-import com.example.gamesapplication.data.remote.GameService
-import com.example.gamesapplication.domain.item.GameItem
-import com.example.gamesapplication.domain.item.toGameItem
+import com.example.gamesapplication.data.remote.GameApi
+import com.example.gamesapplication.data.remote.model.GameModel
 import javax.inject.Inject
 
 
-class GameRepository @Inject constructor(private val gameService: GameService) {
+class GameRepository @Inject constructor(private val gameApi: GameApi) {
 
-    suspend fun getGames(): List<GameItem> {
-        return gameService.getGames().map {
-            it.toGameItem()
-        }
+    suspend fun getGames(apiKey: String): List<GameModel>? {
+        return gameApi.getGames(apiKey).body()?.results
     }
-
 }

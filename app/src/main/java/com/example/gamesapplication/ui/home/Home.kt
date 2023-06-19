@@ -19,19 +19,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberImagePainter
-import com.example.gamesapplication.domain.item.GameItem
+import com.example.gamesapplication.data.remote.model.GameModel
 
+@Preview
 @Composable
 fun HomeScreen() {
     val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
     val games by homeViewModel.games.collectAsState()
     LazyColumn {
-        items(games) { game: GameItem ->
+        items(games) { game: GameModel ->
             GameCard(game = game)
 
         }
@@ -39,8 +40,8 @@ fun HomeScreen() {
 }
 
 @Composable
-fun GameCard(game: GameItem) {
-    val image = rememberImagePainter(data = game.thumbnail)
+fun GameCard(game: GameModel) {
+    val image = rememberImagePainter(data = game.background_image)
     val cardElevation: Dp = 5.dp // Assigning a value of type Dp to cardElevation
 
 
@@ -60,8 +61,8 @@ fun GameCard(game: GameItem) {
                     .height(250.dp)
             )
             Column(modifier = Modifier.padding()) {
-                Text(text = game.title, fontWeight = FontWeight.Bold)
-                Text(text = game.short_description, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Text(text = game.name.orEmpty(), fontWeight = FontWeight.Bold)
+                //Text(text = game.genre, maxLines = 2, overflow = TextOverflow.Ellipsis)
 
             }
         }

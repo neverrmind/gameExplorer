@@ -7,7 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -16,14 +16,14 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(): Retrofit {
+    fun provideRetrofit(): Retrofit.Builder {
         return Retrofit.Builder().baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create()).build()
+            .addConverterFactory(MoshiConverterFactory.create())
     }
 
     @Singleton
     @Provides
-    fun provideGameApi(retrofit: Retrofit): GameApi {
-        return retrofit.create(GameApi::class.java)
+    fun provideGameApi(retrofit: Retrofit.Builder): GameApi {
+        return retrofit.build().create(GameApi::class.java)
     }
 }
