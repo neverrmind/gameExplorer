@@ -2,6 +2,7 @@ package com.example.gamesapplication.ui.home
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,25 +31,28 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.gamesapplication.data.remote.model.GameModel
+import com.example.gamesapplication.navigation.Screen
 
-@Preview
 @Composable
-fun HomeScreen() {
-    val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
+fun HomeScreen(navController: NavController) {
+    val homeViewModel : HomeViewModel = hiltViewModel()
     val games by homeViewModel.games.collectAsState()
     LazyColumn {
         items(games) { game: GameModel ->
-            GameCard(game = game)
+            GameCard(game = game, navController)
 
         }
     }
 }
 
 @Composable
-fun GameCard(game: GameModel) {
+fun GameCard(game: GameModel, navController: NavController) {
     val image = rememberImagePainter(data = game.background_image)
 
     Card(
@@ -56,7 +60,10 @@ fun GameCard(game: GameModel) {
         shape = RoundedCornerShape(5.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .height(136.dp),
+            .height(136.dp)
+            .clickable {
+                navController.navigate(Screen.DetailScreen.withArgs(game.id.toString()))
+            },
         colors = CardDefaults.cardColors(Color.White)
     ) {
         Row(modifier = Modifier.padding(16.dp)) {

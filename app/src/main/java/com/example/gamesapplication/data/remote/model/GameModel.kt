@@ -5,6 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class GameModel(
+    @Json(name = "id") val id: Int?,
     @Json(name = "name") val name: String? = "",
     @Json(name = "background_image") val background_image: String? = "",
     @Json(name = "metacritic") val metacritic: Int?,
