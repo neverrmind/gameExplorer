@@ -3,7 +3,6 @@ package com.example.gamesapplication.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamesapplication.data.remote.model.GameModel
-import com.example.gamesapplication.domain.GetGamesUseCase
 import com.example.gamesapplication.repo.GameRepository
 import com.example.gamesapplication.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +13,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getGamesUseCase: GetGamesUseCase,
     private val gameRepository: GameRepository
 ) :
 
