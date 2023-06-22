@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -30,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -38,7 +36,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
-import com.example.gamesapplication.R
 import com.example.gamesapplication.data.remote.model.GameModel
 import com.example.gamesapplication.navigation.Screen
 
@@ -54,20 +51,6 @@ fun HomeScreen(navController: NavController) {
                 titleContentColor = Color(0xFFFFFFFF),
                 containerColor = Color(0xFF1064BC)
             ),
-            navigationIcon = {
-                Icon(
-                    painter = painterResource(R.drawable.chevron_left),
-                    contentDescription = null,
-                    tint = Color.White
-                )
-            },
-            actions = {
-                Icon(
-                    painter = painterResource(R.drawable.heart_favorite_save___negative),
-                    contentDescription = null,
-                    tint = Color.White
-                )
-            },
             title = {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
