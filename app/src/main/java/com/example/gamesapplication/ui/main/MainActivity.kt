@@ -8,7 +8,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.gamesapplication.navigation.Navigation
-import com.example.gamesapplication.ui.home.HomeScreen
 import com.example.gamesapplication.ui.theme.GamesApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,10 +22,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Navigation()
-                    //HomeScreen()
                 }
             }
         }
     }
 }
-

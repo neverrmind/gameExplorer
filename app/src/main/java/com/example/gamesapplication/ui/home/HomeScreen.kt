@@ -18,7 +18,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -26,27 +30,57 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
+import com.example.gamesapplication.R
 import com.example.gamesapplication.data.remote.model.GameModel
 import com.example.gamesapplication.navigation.Screen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController) {
-    val homeViewModel : HomeViewModel = hiltViewModel()
+    val homeViewModel: HomeViewModel = hiltViewModel()
     val games by homeViewModel.games.collectAsState()
-    LazyColumn {
-        items(games) { game: GameModel ->
-            GameCard(game = game, navController)
 
+    Column {
+        TopAppBar(
+            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                titleContentColor = Color(0xFFFFFFFF),
+                containerColor = Color(0xFF1064BC)
+            ),
+            navigationIcon = {
+                Icon(
+                    painter = painterResource(R.drawable.chevron_left),
+                    contentDescription = null,
+                    tint = Color.White
+                )
+            },
+            actions = {
+                Icon(
+                    painter = painterResource(R.drawable.heart_favorite_save___negative),
+                    contentDescription = null,
+                    tint = Color.White
+                )
+            },
+            title = {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    text = "Games"
+                )
+            }
+        )
+        LazyColumn {
+            items(games) { game: GameModel ->
+                GameCard(game = game, navController)
+
+            }
         }
     }
 }
