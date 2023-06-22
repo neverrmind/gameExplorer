@@ -1,6 +1,7 @@
 package com.example.gamesapplication.ui.home
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,19 +17,26 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -36,33 +44,86 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
+import com.example.gamesapplication.R
 import com.example.gamesapplication.data.remote.model.GameModel
 import com.example.gamesapplication.navigation.Screen
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController) {
     val homeViewModel: HomeViewModel = hiltViewModel()
     val games by homeViewModel.games.collectAsState()
+    val isClickedGames = remember { mutableStateOf(true) }
+    val isClickedFavorites = remember { mutableStateOf(false) }
 
-    Column {
-        TopAppBar(
-            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                titleContentColor = Color(0xFFFFFFFF),
-                containerColor = Color(0xFF1064BC)
-            ),
-            title = {
-                Text(
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    titleContentColor = Color(0xFFFFFFFF),
+                    containerColor = Color(0xFF1064BC)
+                ),
+                title = {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        text = "Games"
+                    )
+                }
+            )
+        },
+        bottomBar = {
+            BottomAppBar(
+                containerColor = Color(0xFFFFFFFF)
+            ) {
+                Row(
                     modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    text = "Games"
-                )
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Tab(
+                        selected = true,
+                        onClick = {
+                            isClickedGames.value = true;
+                            isClickedFavorites.value = false;
+                            /* Sekme tıklandığında yapılacak işlemler */
+                        },
+                        modifier = Modifier.weight(1f),
+                        icon = {
+                            Icon(
+                                painter = painterResource(R.drawable.menu_games),
+                                contentDescription = null,
+                                tint = if (isClickedGames.value) Color.Blue else Color.Gray
+                            )
+                        }
+                    )
+                    Tab(
+                        selected = false,
+                        onClick = {
+                            isClickedFavorites.value = true;
+                            isClickedGames.value = false;
+                            /* Sekme tıklandığında yapılacak işlemler */
+                        },
+                        modifier = Modifier.weight(1f),
+                        icon = {
+                            Icon(
+                                painter = painterResource(R.drawable.menu___home),
+                                contentDescription = null,
+                                tint = if (isClickedFavorites.value) Color.Blue else Color.Gray
+                            )
+                        }
+                    )
+                }
             }
-        )
-        LazyColumn {
-            items(games) { game: GameModel ->
-                GameCard(game = game, navController)
-
+        }
+    ) {
+        Column {
+            LazyColumn(
+                modifier = Modifier.padding(top = 56.dp) // TopAppBar'ın yüksekliği kadar üst boşluk ekler
+            ) {
+                items(games) { game: GameModel ->
+                    GameCard(game = game, navController)
+                }
             }
         }
     }
