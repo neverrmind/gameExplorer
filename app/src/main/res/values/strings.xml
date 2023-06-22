@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">GamesApplication</string>
+    <string name="game_description">Game Description</string>
+    <string name="visit_reddit">Visit reddit</string>
+    <string name="visit_website">Visit website</string>
+    <string name="favorites">Favorites</string>
+    <string name="games">Games</string>
+    <string name="metacritic">metacritic: </string>
 </resources>

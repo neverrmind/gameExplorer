@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,7 +53,7 @@ fun DetailScreen(navController: NavController, name: String?) {
     val image = rememberImagePainter(data = gameDetail?.background_image)
     val name = gameDetail?.name
     val description = gameDetail?.description_raw
-    val reddit_url = gameDetail?.reddit_url
+    val redditUrl = gameDetail?.reddit_url
     val website = gameDetail?.website
     val isClicked = remember { mutableStateOf(false) }
     val isClickedWeb = remember { mutableStateOf(false) }
@@ -126,7 +127,7 @@ fun DetailScreen(navController: NavController, name: String?) {
             ) {
                 Column {
                     Text(
-                        text = "Game Description",
+                        text = stringResource(R.string.game_description),
                         modifier = Modifier
                             .padding(5.dp),
                         fontWeight = FontWeight.Medium,
@@ -160,11 +161,11 @@ fun DetailScreen(navController: NavController, name: String?) {
                 Text(
                     modifier = Modifier
                         .clickable {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(reddit_url))
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(redditUrl))
                             launcher.launch(intent)
                             isClicked.value = true
                         },
-                    text = "Visit reddit",
+                    text = stringResource(R.string.visit_reddit),
                     fontWeight = FontWeight.Normal,
                     fontSize = 17.sp,
                     letterSpacing = 0.41.sp,
@@ -187,7 +188,7 @@ fun DetailScreen(navController: NavController, name: String?) {
                             launcher.launch(intent)
                             isClickedWeb.value = true
                         },
-                    text = "Visit website",
+                    text = stringResource(R.string.visit_website),
                     fontWeight = FontWeight.Normal,
                     fontSize = 17.sp,
                     letterSpacing = 0.41.sp,

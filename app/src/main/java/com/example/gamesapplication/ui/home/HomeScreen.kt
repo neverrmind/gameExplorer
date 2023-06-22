@@ -36,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -67,7 +68,7 @@ fun HomeScreen(navController: NavController) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
-                        text = "Games"
+                        text = stringResource(R.string.games)
                     )
                 }
             )
@@ -117,7 +118,7 @@ fun HomeScreen(navController: NavController) {
     ) {
         Column {
             LazyColumn(
-                modifier = Modifier.padding(top = 56.dp) // TopAppBar'ın yüksekliği kadar üst boşluk ekler
+                modifier = Modifier.padding(top = 56.dp)
             ) {
                 items(games) { game: GameModel ->
                     GameCard(game = game, navController)
@@ -169,7 +170,7 @@ fun GameCard(game: GameModel, navController: NavController) {
                 ) {
                     Row() {
                         Text(
-                            text = "metacritic: ",
+                            text = stringResource(R.string.metacritic),
                             modifier = Modifier,
                             fontWeight = FontWeight.Medium,
                             fontSize = 14.sp,
@@ -187,7 +188,6 @@ fun GameCard(game: GameModel, navController: NavController) {
                             color = Color(0xFFD80000)
                         )
                     }
-
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = "${game.genres?.joinToString { it.name }}",
@@ -198,7 +198,6 @@ fun GameCard(game: GameModel, navController: NavController) {
                         letterSpacing = (-0.08).sp,
                         textAlign = TextAlign.Left,
                         color = Color(0xFF8A8A8F)
-
                     )
                 }
             }

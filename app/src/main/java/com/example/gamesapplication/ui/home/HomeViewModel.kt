@@ -27,7 +27,6 @@ class HomeViewModel @Inject constructor(
 
     private fun getGames() {
         viewModelScope.launch {
-
             val games = gameRepository.getGames(Constants.API_KEY)
             if (games != null) {
                 _games.value = games
