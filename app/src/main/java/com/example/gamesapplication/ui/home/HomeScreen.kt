@@ -1,6 +1,5 @@
 package com.example.gamesapplication.ui.home
 
-
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -86,7 +85,6 @@ fun HomeScreen(navController: NavController) {
                         onClick = {
                             isClickedGames.value = true;
                             isClickedFavorites.value = false;
-                            /* Sekme tıklandığında yapılacak işlemler */
                         },
                         modifier = Modifier.weight(1f),
                         icon = {
@@ -102,7 +100,7 @@ fun HomeScreen(navController: NavController) {
                         onClick = {
                             isClickedFavorites.value = true;
                             isClickedGames.value = false;
-                            /* Sekme tıklandığında yapılacak işlemler */
+                            navController.navigate(Screen.FavoritesScreen.route)
                         },
                         modifier = Modifier.weight(1f),
                         icon = {
