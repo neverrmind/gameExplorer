@@ -60,6 +60,7 @@ fun DetailScreen(navController: NavController, name: String?) {
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { }
     Column {
+        val isFavoriteAdded = detailViewModel.isFavorite.collectAsState().value
         TopAppBar(
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                 titleContentColor = Color(0xFFFFFFFF),
@@ -77,9 +78,22 @@ fun DetailScreen(navController: NavController, name: String?) {
             },
             actions = {
                 Icon(
-                    painter = painterResource(R.drawable.heart_favorite_save___negative),
+                    painter = painterResource(
+                        if (!isFavoriteAdded) {
+                            R.drawable.heart_favorite_negative
+                        } else {
+                            R.drawable.heart_favorite_positive
+                        }
+                    ),
                     contentDescription = null,
-                    tint = Color.White
+                    tint = Color.White,
+                    modifier = Modifier.clickable {
+                        if (isFavoriteAdded) {
+                            detailViewModel.deleteFavorites()
+                        } else {
+                            detailViewModel.addFavorites()
+                        }
+                    }
                 )
             },
             title = {

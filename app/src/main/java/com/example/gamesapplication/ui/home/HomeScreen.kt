@@ -121,7 +121,7 @@ fun HomeScreen(navController: NavController) {
                 modifier = Modifier.padding(top = 56.dp)
             ) {
                 items(games) { game: GameModel ->
-                    GameCard(game = game, navController)
+                    GameCard(game = game, navController, homeViewModel)
                 }
             }
         }
@@ -129,7 +129,7 @@ fun HomeScreen(navController: NavController) {
 }
 
 @Composable
-fun GameCard(game: GameModel, navController: NavController) {
+fun GameCard(game: GameModel, navController: NavController, homeViewModel: HomeViewModel) {
     val image = rememberImagePainter(data = game.background_image)
 
     Card(
@@ -139,6 +139,7 @@ fun GameCard(game: GameModel, navController: NavController) {
             .fillMaxWidth()
             .height(136.dp)
             .clickable {
+                homeViewModel.setGameInfo(game)
                 navController.navigate(Screen.DetailScreen.withArgs(game.id.toString()))
             },
         colors = CardDefaults.cardColors(Color.White)

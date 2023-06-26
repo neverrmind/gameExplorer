@@ -2,6 +2,7 @@ package com.example.gamesapplication.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.gamesapplication.data.remote.GameInfoStorage
 import com.example.gamesapplication.data.remote.model.GameModel
 import com.example.gamesapplication.repo.GameRepository
 import com.example.gamesapplication.util.Constants
@@ -32,5 +33,10 @@ class HomeViewModel @Inject constructor(
                 _games.value = games
             }
         }
+    }
+
+    fun setGameInfo(gameModel: GameModel) {
+        GameInfoStorage.clearStorage()
+        GameInfoStorage.gameModel = gameModel
     }
 }

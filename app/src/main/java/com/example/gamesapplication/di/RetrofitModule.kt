@@ -2,6 +2,7 @@ package com.example.gamesapplication.di
 
 import com.example.gamesapplication.data.remote.GameApi
 import com.example.gamesapplication.util.Constants.Companion.BASE_URL
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,5 +26,10 @@ object RetrofitModule {
     @Provides
     fun provideGameApi(retrofit: Retrofit.Builder): GameApi {
         return retrofit.build().create(GameApi::class.java)
+    }
+
+    @Provides
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder().build()
     }
 }
