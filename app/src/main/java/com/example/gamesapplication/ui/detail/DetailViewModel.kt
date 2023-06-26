@@ -47,6 +47,7 @@ class DetailViewModel @Inject constructor(
             val gameDetail = gameId?.let { gameRepository.getGameDetail(it, Constants.API_KEY) }
             if (gameDetail != null) {
                 _gameDetailModel.value = gameDetail
+                _gameId.value = gameId
             }
         }
     }
@@ -86,15 +87,9 @@ class DetailViewModel @Inject constructor(
 
     fun checkFavorite(): Boolean {
         val favoritesList = getFavorites()
-        val gameId = gameId.value?.toIntOrNull()
-
-        if (favoritesList != null && gameId != null) {
-            for (gameModel in favoritesList) {
-                if (gameModel.id == gameId) {
-                    return true
-                }
-            }
-        }
-        return false
+        val gameId = _gameId.value?.toIntOrNull()
+        var isFavorites: Boolean = false
+        isFavorites = !favoritesList?.filter { it.id == gameId }.isNullOrEmpty()
+        return isFavorites
     }
 }
