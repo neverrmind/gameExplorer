@@ -28,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -65,6 +66,8 @@ fun HomeScreen(navController: NavController) {
     val isClickedGames = remember { mutableStateOf(true) }
     val isClickedFavorites = remember { mutableStateOf(false) }
     val lazyListState = rememberLazyListState()
+    val searchQuery by homeViewModel.searchQuery.collectAsState()
+    val searchResult by homeViewModel.searchResult.collectAsState()
 
     val endReached = remember {
         derivedStateOf {
@@ -144,14 +147,31 @@ fun HomeScreen(navController: NavController) {
             modifier = Modifier
                 .background(Color.LightGray)
                 .navigationBarsPadding()
-                .padding(top = 70.dp, bottom = 100.dp),
+                .padding(top = 65.dp, bottom = 100.dp),
         ) {
+            TextField(
+                value = searchQuery,
+                onValueChange = { homeViewModel.setSearchQuery(it) },
+                label = { Text(text = stringResource(R.string.search_for_games)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Color.White),
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.icon_search),
+                        contentDescription = null
+                    )
+                }
+            )
             LazyColumn(
                 state = lazyListState,
             ) {
-                items(games) { game: GameModel ->
+                items(if (searchQuery.isNotEmpty()) searchResult else games) { game: GameModel ->
                     GameCard(game = game, navController, homeViewModel)
                 }
+
             }
             if (loading) {
                 CircularProgressIndicator(

@@ -15,4 +15,13 @@ class GameRepository @Inject constructor(private val gameApi: GameApi) {
     suspend fun getGameDetail(gameId: String, apiKey: String): GameDetailListModel? {
         return gameApi.getGameDetails(gameId, apiKey).body()
     }
+
+    suspend fun searchGames(
+        query: String,
+        pageSize: Int,
+        page: Int,
+        apiKey: String
+    ): List<GameModel>? {
+        return gameApi.getGames(query, pageSize, page, apiKey).body()?.results
+    }
 }

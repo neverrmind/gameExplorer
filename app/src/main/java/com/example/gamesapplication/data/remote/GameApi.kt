@@ -21,4 +21,13 @@ interface GameApi {
         @Path("gameId") gameId: String,
         @Query("key") apiKey: String
     ): Response<GameDetailListModel>
+
+    @GET(GAMES_ENDPOINT)
+    suspend fun getGames(
+        @Query("search") query: String,
+        @Query("page_size") pageSize: Int,
+        @Query("page") page: Int,
+        @Query("key") apiKey: String
+    ): Response<GameListModel>
+
 }
