@@ -7,4 +7,5 @@
     <string name="games">Games</string>
     <string name="metacritic">metacritic: </string>
     <string name="search_for_games">Search for games</string>
+    <string name="no_favorites_found">There is no favorites found.</string>
 </resources>
