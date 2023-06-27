@@ -21,6 +21,9 @@ class HomeViewModel @Inject constructor(
 
     private val _games = MutableStateFlow(emptyList<GameModel>())
     val games: StateFlow<List<GameModel>> get() = _games
+    private var currentPage = 1
+    private val _loading = MutableStateFlow(false)
+    val loading: StateFlow<Boolean> = _loading
 
     init {
         getGames()
@@ -28,10 +31,29 @@ class HomeViewModel @Inject constructor(
 
     private fun getGames() {
         viewModelScope.launch {
-            val games = gameRepository.getGames(Constants.API_KEY)
+            val games = gameRepository.getGames(
+                Constants.PAGE_SIZE,
+                Constants.PAGE_NUMBER,
+                Constants.API_KEY
+            )
             if (games != null) {
                 _games.value = games
             }
+        }
+    }
+
+    fun loadNextPage() {
+        viewModelScope.launch {
+            if (_loading.value) return@launch // Skip if already loading
+            _loading.value = true
+
+            val nextPage = currentPage + 1
+            val newGames = gameRepository.getGames(Constants.PAGE_SIZE, nextPage, Constants.API_KEY)
+            if (newGames != null) {
+                _games.value += newGames
+                currentPage = nextPage
+            }
+            _loading.value = false
         }
     }
 

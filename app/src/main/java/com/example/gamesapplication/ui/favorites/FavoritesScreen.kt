@@ -118,7 +118,7 @@ fun FavoritesScreen(navController: NavController) {
     ) {
         Column {
             LazyColumn(
-                modifier = Modifier.padding(top = 56.dp)
+                modifier = Modifier.padding(top = 56.dp, bottom = 70.dp)
             ) {
                 items(games.value?.toList() ?: emptyList()) { game: GameModel ->
                     GameCard(game = game, navController, favoriteViewModel)

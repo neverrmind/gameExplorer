@@ -10,7 +10,11 @@ import retrofit2.http.Query
 
 interface GameApi {
     @GET(GAMES_ENDPOINT)
-    suspend fun getGames(@Query("key") apiKey: String): Response<GameListModel>
+    suspend fun getGames(
+        @Query("page_size") pageSize: Int,
+        @Query("page") page: Int,
+        @Query("key") apiKey: String
+    ): Response<GameListModel>
 
     @GET("$GAMES_ENDPOINT/{gameId}")
     suspend fun getGameDetails(

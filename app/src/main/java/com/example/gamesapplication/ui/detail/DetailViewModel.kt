@@ -34,11 +34,11 @@ class DetailViewModel @Inject constructor(
 
     private val _gameModel: MutableStateFlow<GameModel?> = MutableStateFlow(null)
 
-    private val _favorite: MutableStateFlow<List<GameModel>> = MutableStateFlow(emptyList())
+    private val _favorite: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val favorite: StateFlow<Boolean> get() = _favorite
 
     init {
         _gameModel.value = GameInfoStorage.gameModel
-        _isFavorite.value = checkFavorite()
     }
 
     fun getGameDetail(gameId: String?) {
@@ -48,6 +48,7 @@ class DetailViewModel @Inject constructor(
             if (gameDetail != null) {
                 _gameDetailModel.value = gameDetail
                 _gameId.value = gameId
+                _isFavorite.value = checkFavorite()
             }
         }
     }
@@ -85,7 +86,7 @@ class DetailViewModel @Inject constructor(
         _isFavorite.value = false
     }
 
-    fun checkFavorite(): Boolean {
+    private fun checkFavorite(): Boolean {
         val favoritesList = getFavorites()
         val gameId = _gameId.value?.toIntOrNull()
         var isFavorites: Boolean = false

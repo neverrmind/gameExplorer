@@ -2,6 +2,7 @@ package com.example.gamesapplication.ui.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,14 +12,17 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -27,10 +31,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -54,8 +61,25 @@ import com.example.gamesapplication.navigation.Screen
 fun HomeScreen(navController: NavController) {
     val homeViewModel: HomeViewModel = hiltViewModel()
     val games by homeViewModel.games.collectAsState()
+    val loading by homeViewModel.loading.collectAsState()
     val isClickedGames = remember { mutableStateOf(true) }
     val isClickedFavorites = remember { mutableStateOf(false) }
+    val lazyListState = rememberLazyListState()
+
+    val endReached = remember {
+        derivedStateOf {
+            val visibleItemCount = lazyListState.layoutInfo.visibleItemsInfo.size
+            val lastVisibleItemIndex =
+                lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -1
+            val totalItemCount = lazyListState.layoutInfo.totalItemsCount
+            visibleItemCount > 0 && lastVisibleItemIndex >= totalItemCount - 1
+        }
+    }
+    LaunchedEffect(endReached.value) {
+        if (endReached.value) {
+            homeViewModel.loadNextPage()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -116,13 +140,24 @@ fun HomeScreen(navController: NavController) {
             }
         }
     ) {
-        Column {
+        Column(
+            modifier = Modifier
+                .background(Color.LightGray)
+                .navigationBarsPadding()
+                .padding(top = 70.dp, bottom = 100.dp),
+        ) {
             LazyColumn(
-                modifier = Modifier.padding(top = 56.dp)
+                state = lazyListState,
             ) {
                 items(games) { game: GameModel ->
                     GameCard(game = game, navController, homeViewModel)
                 }
+            }
+            if (loading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    strokeWidth = 4.dp
+                )
             }
         }
     }

@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 class GameRepository @Inject constructor(private val gameApi: GameApi) {
 
-    suspend fun getGames(apiKey: String): List<GameModel>? {
-        return gameApi.getGames(apiKey).body()?.results
+    suspend fun getGames(pageSize: Int, page: Int, apiKey: String): List<GameModel>? {
+        return gameApi.getGames(pageSize, page, apiKey).body()?.results
     }
 
     suspend fun getGameDetail(gameId: String, apiKey: String): GameDetailListModel? {

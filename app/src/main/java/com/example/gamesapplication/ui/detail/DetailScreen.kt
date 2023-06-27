@@ -46,7 +46,7 @@ import com.example.gamesapplication.R
 @Composable
 fun DetailScreen(navController: NavController, name: String?) {
     val detailViewModel: DetailViewModel = hiltViewModel()
-    LaunchedEffect(detailViewModel.gameId.collectAsState().value) {
+    LaunchedEffect(detailViewModel.favorite.collectAsState().value) {
         detailViewModel.getGameDetail(name)
     }
     val gameDetail by detailViewModel.gameDetailModel.collectAsState()
