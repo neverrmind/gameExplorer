@@ -30,4 +30,14 @@ class FavoriteViewModel @Inject constructor(
         return arrayListOf()
     }
 
+    fun deleteFavorites(game: GameModel) {
+        val list = getFavorites()
+        list?.remove(game)
+
+        val type = Types.newParameterizedType(List::class.java, GameModel::class.java)
+        val json = moshi.adapter<List<GameModel?>>(type).toJson(list)
+        preferences.edit().putString("favorites", json).apply()
+
+        _games.value = getFavorites() // Favori oyunları güncelle
+    }
 }

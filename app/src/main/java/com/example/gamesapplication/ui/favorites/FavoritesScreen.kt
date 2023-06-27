@@ -121,7 +121,13 @@ fun FavoritesScreen(navController: NavController) {
                 modifier = Modifier.padding(top = 56.dp, bottom = 70.dp)
             ) {
                 items(games.value?.toList() ?: emptyList()) { game: GameModel ->
-                    GameCard(game = game, navController, favoriteViewModel)
+                    GameCard(
+                        game = game,
+                        navController,
+                        favoriteViewModel,
+                        onDeleteClicked = { deletedGame ->
+                            favoriteViewModel.deleteFavorites(deletedGame)
+                        })
                 }
             }
         }
@@ -129,7 +135,12 @@ fun FavoritesScreen(navController: NavController) {
 }
 
 @Composable
-fun GameCard(game: GameModel, navController: NavController, favoriteViewModel: FavoriteViewModel) {
+fun GameCard(
+    game: GameModel,
+    navController: NavController,
+    favoriteViewModel: FavoriteViewModel,
+    onDeleteClicked: (GameModel) -> Unit
+) {
     val image = rememberImagePainter(data = game.background_image)
 
     Card(
@@ -168,7 +179,7 @@ fun GameCard(game: GameModel, navController: NavController, favoriteViewModel: F
                     )
                     Icon(
                         modifier = Modifier.clickable {
-
+                            onDeleteClicked(game)
                         },
                         painter = painterResource(R.drawable.icon_garbage),
                         contentDescription = null,
